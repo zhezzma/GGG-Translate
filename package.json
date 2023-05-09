@@ -1,0 +1,40 @@
+{
+  "name": "ggg-translate",
+  "version": "0.1.0",
+  "description": "Element Plus with Nuxt 3 Minimal Starter",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zhezzma/ggg-translate.git"
+  },
+  "author": "zhezzma",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build --dotenv .env.production",
+    "dev": "nuxt dev --dotenv .env.development",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "start": "node .output/server/index.mjs"
+  },
+  "devDependencies": {
+    "@alicloud/alimt20181012": "^1.1.0",
+    "@element-plus/nuxt": "^1.0.4",
+    "@nuxtjs/color-mode": "^3.2.0",
+    "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
+    "@pinia/nuxt": "^0.4.10",
+    "@types/node": "^20",
+    "@unocss/nuxt": "^0.51.12",
+    "@volcengine/openapi": "^1.8.0",
+    "@vueuse/nuxt": "^10.1.2",
+    "bing-translate-api": "^2.9.1",
+    "crypto": "^1.0.1",
+    "deepl-node": "^1.9.0",
+    "nuxt": "^3.4.3",
+    "openai": "^3.2.1",
+    "sass": "^1.62.1",
+    "tencentcloud-sdk-nodejs": "^4.0.593",
+    "ts-debounce": "^4.0.0"
+
+  }
+}
