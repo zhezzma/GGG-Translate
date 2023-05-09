@@ -66,5 +66,5 @@ export function mergeTranslates(a: any, b: any): any {
       filtered[prop] = b[prop];
     }
   }
-  return mergeObjects(a,b)
+  return mergeObjects(a,filtered)
 }
