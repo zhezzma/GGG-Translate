@@ -154,11 +154,6 @@ function cleanSourceText() {
   sourceText.value = ""
 }
 
-var config = useRuntimeConfig();
-
-console.log(config.public.translates.ali.keyId)
-
-
 </script>
 
 <style scoped>

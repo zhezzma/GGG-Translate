@@ -44,18 +44,27 @@ export const useSettingsStore = defineStore('settings', {
 });
 
 
-export function mergeTranslates(a: any, b: any): any {
+export function mergeObjects(a:any,b:any):any{
   const result = { ...a };
   for (const [key, value] of Object.entries(b)) {
     if (typeof value === "object" && value !== null) {
-
       result[key] = result[key] || {};
-
-      result[key] = mergeTranslates(result[key], value);
+      result[key] = mergeObjects(result[key], value);
     } else if (value !== "" && value !== undefined) {
-
       result[key] = value;
     }
   }
   return result;
+}
+
+
+export function mergeTranslates(a: any, b: any): any {
+  const filtered = {};
+  for (const prop in a) {
+    if (prop in b) {
+      //@ts-expect-error
+      filtered[prop] = b[prop];
+    }
+  }
+  return mergeObjects(a,b)
 }
