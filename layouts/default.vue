@@ -8,7 +8,7 @@ const toggleAside = () => {
   showAside.value = !showAside.value;
 };
 
-if (process.client) {
+if (false&&process.client) {
   const screenWidth = ref(window.innerWidth);
   watchEffect(() => {
     if (screenWidth.value < 512) {
