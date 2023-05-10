@@ -1,7 +1,4 @@
 
-import { google_detect } from "~/utils/translate/google";
-import { tencent_detect } from "~/utils/translate/tencent";
-
 export default defineEventHandler(async (event) => {
     const query = getQuery(event)
     const text = query.text as string;

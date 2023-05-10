@@ -1,12 +1,3 @@
-import { baidu } from "~/utils/translate/baidu"
-import { youdao } from "~/utils/translate/youdao";
-import { google } from "~/utils/translate/google";
-import { tencent } from "~/utils/translate/tencent";
-import { chatgpt } from "~/utils/translate/chatgpt";
-import { bing } from "~/utils/translate/bing";
-import { ali } from "~/utils/translate/ali";
-import { deepl } from "~/utils/translate/deepl";
-import { volc } from "~/utils/translate/volc";
 
 
 const translates = new Map<string, TranslateText>();
