@@ -1,6 +1,5 @@
-# GGGT
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/zhezzma/GGG-Translate)
+# GGG-Translate
+一个聚合翻译软件,支持多种翻译
 
 ## Setup
 
