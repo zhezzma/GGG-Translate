@@ -154,7 +154,10 @@ export default defineNuxtConfig({
 
   // colorMode
   colorMode: {
+    preference: 'system', // default value of $colorMode.preference
+    fallback: 'dark', // fallback value if not system preference found
     classSuffix: '',
+    storageKey: 'nuxt-color-mode'
   },
 
   unocss: {
