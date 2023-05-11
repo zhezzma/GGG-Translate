@@ -59,7 +59,7 @@ const store = useAPISettingsStore();
 const form = useFormSettingsStore();
 const languageList = appConfig.languages
 
-type Translate = {
+interface Translate{
   label: string,
   name: string,
   icon: string,
@@ -69,7 +69,7 @@ type Translate = {
   requestId: string
 }
 
-const resetTranslate = (api: any) => {
+const resetTranslate = (api: Translate) => {
   api.loading = false
   api.error = ''
   api.result = ''
@@ -77,10 +77,9 @@ const resetTranslate = (api: any) => {
 }
 
 const raw: Translate[] = [];
-const translates = reactive(raw);
 for (let i = 0; i < appConfig.translates.length; i++) {
   const obj = appConfig.translates[i];
-  translates.push({
+  raw.push({
     label: obj.label,
     name: obj.name,
     icon: obj.icon,
@@ -90,9 +89,9 @@ for (let i = 0; i < appConfig.translates.length; i++) {
     requestId: '',
   })
 }
-
+const translates = reactive(raw);
 const enabledTranslates = computed(() => {
-  return appConfig.translates.filter(api => store.settings[api.name].enable)
+  return translates.filter(api => store.settings[api.name].enable)
 })
 
 
@@ -126,7 +125,7 @@ const translate = debounce(async (text: string) => {
   })
 }, 1500)
 
-const translate_api = async (api: any, text: string, from: string, to: string) => {
+const translate_api = async (api: Translate, text: string, from: string, to: string) => {
   if (!text || text === '') {
     resetTranslate(api)
     return
