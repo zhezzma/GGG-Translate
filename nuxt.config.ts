@@ -104,10 +104,10 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    development:false,
-    detect_lang :['google','tencent'],
     public: {
+      development:false,
       apiBase: '/api',
+      detect_lang :['google','tencent'],
       translates: getDefaultSettings(),
     }
   },

@@ -54,17 +54,12 @@
 <script lang="ts" setup>
 import { debounce } from "ts-debounce";
 const appConfig = useAppConfig()
-
+const runtimeConfig = useRuntimeConfig()
 const store = useSettingsStore();
 const sourceText = useInputHistoryStore();
 const langFrom = ref("auto")
 const langTo = ref('auto')
-
- 
-
 const languageList = appConfig.languages
-
-let from = "zh";
 
 sourceText.$subscribe((mutation, state) => {
   var newText = state.value.trim()
@@ -77,6 +72,7 @@ const execute = (text: string) => {
 
 
 const translate = debounce(async (text: string) => {
+  let from = "zh";
   if (langFrom.value == "auto") {
     const { data } = await detectText(text, store.detectSettings)
     //@ts-expect-error
@@ -87,13 +83,13 @@ const translate = debounce(async (text: string) => {
   }
 
   enabledTranslates.value.forEach(api => {
-    translate_api(api, text)
+    translate_api(api, text, from)
   })
 }, 1500)
 
 
 
-const translate_api = async (api: any, text: string) => {
+const translate_api = async (api: any, text: string, from: string) => {
   if (!text || text === '') {
     api.loading = false
     api.error = ''
@@ -110,11 +106,13 @@ const translate_api = async (api: any, text: string) => {
     if (from == "en") to = "zh";
   }
 
-  //console.log(`${from}-->${to}`)
-
   api.loading = true
   api.error = ''
   api.result = ''
+
+  if (runtimeConfig.public.development) {
+    console.log(`${api}:${from}==>${to}`);
+  }
 
   const { data, pending, error, refresh } = await translateText(api.name, text, from, to, store.translateSetting(api.name))
   api.loading = false
@@ -125,7 +123,7 @@ const translate_api = async (api: any, text: string) => {
   //@ts-expect-error
   api.result = data.value.message
 }
- 
+
 const enabledTranslates = computed(() => {
   return appConfig.translates.filter(api => store.settings[api.name].enable)
 })
@@ -153,6 +151,13 @@ function cleanSourceText() {
   sourceText.value = ""
 }
 
+
+onMounted(() => {
+  if (runtimeConfig.public.development) {
+    console.log(runtimeConfig.public.detect_lang);
+  }
+})
+
 </script>
 
 <style scoped>
@@ -170,11 +175,11 @@ function cleanSourceText() {
   align-items: center;
 }
 
-.tool-bar .el-select{
+.tool-bar .el-select {
   flex: 1;
 }
 
-.tool-bar .swap-button{
+.tool-bar .swap-button {
   flex: 0 0 50px;
 }
 

@@ -17,8 +17,8 @@ export default defineEventHandler(async (event) => {
 export async function language_detect(str: string, config: any): Promise<string> {
     let lang = ''
     const runtimeConfig = useRuntimeConfig()
-    for (let index = 0; index < runtimeConfig.detect_lang.length; index++) {
-        const element = runtimeConfig.detect_lang[index] as string;
+    for (let index = 0; index < runtimeConfig.public.detect_lang.length; index++) {
+        const element = runtimeConfig.public.detect_lang[index] as string;
         const detectTextLang  = detects.get(element);
         try {
             lang = await detectTextLang!(str, config[element])

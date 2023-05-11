@@ -23,8 +23,6 @@ export default defineEventHandler(async (event) => {
     from = fixLanguageCode(translator, from);
     to = fixLanguageCode(translator, to);
 
-    //console.log(`${translator}:${from}==>${to}`);
-
     const func = translates.get(translator);
     if (!func) {
         throw createError({
