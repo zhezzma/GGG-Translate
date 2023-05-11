@@ -30,9 +30,8 @@ export const volc: TranslateText = async (text, from, to, conf) => {
                 message: `${rr.ResponseMetadata?.Error?.Message}`,
             })
         }
-
         //@ts-expect-error
-        return (rr.TranslationList || rr.Result ||[]).map((x: any) => x.Translation).join('\n')
+        return (rr.TranslationList ||[]).map((x: any) => x.Translation).join('\n')
     } catch (error) {
         throw createError({
             message: error as string
