@@ -22,7 +22,7 @@ export const baidu: TranslateText = async (text, from, to, conf) => {
 
     if (result?.hasOwnProperty("error_code")) {
         throw createError({
-            statusCode: result.error_code,
+            statusCode: 500,
             message: `发生了错误error_code:${result.error_code}`,
         })
     }

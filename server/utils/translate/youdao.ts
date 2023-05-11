@@ -36,7 +36,7 @@ export const youdao: TranslateText = async (text, from, to, conf) => {
 
 	if (data.errorCode != 0) {
 		throw createError({
-			statusCode: data.errorCode,
+			statusCode: 500,
 			message: `发生了错误error_code:${data.errorCode}`,
 		})
 	}
