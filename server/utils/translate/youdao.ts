@@ -1,7 +1,7 @@
 import { createHash } from "crypto";
 
- 
- 
+
+
 
 function S4(): string {
 	return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
@@ -14,35 +14,35 @@ function truncate(q: string): string {
 }
 
 
-export const youdao: TranslateText = async (text, from, to,conf) => {
+export const youdao: TranslateText = async (text, from, to, conf) => {
 
-    const salt = S4() + S4() + S4() + S4() + S4() + S4() + S4() + S4()
+	const salt = S4() + S4() + S4() + S4() + S4() + S4() + S4() + S4()
 	const curtime = Math.round(Date.now() / 1000)
 	const sign = createHash('sha256').update(conf.appKey + truncate(text) + salt + curtime + conf.key).digest('hex')
- 
-    const data = await $fetch("http://openapi.youdao.com/api", {
-        query: {
-            q: text,
-            from: from,
-            to: to,
-            appKey: conf.appKey,
-            salt: salt,
-            sign: sign,
-            signType: 'v3',
-            curtime: curtime,
-            ext: 'mp3',
-        }
-    }) as any;
- 
-    if (data.errorCode!=0) {
-        throw createError({
-            statusCode: data.errorCode,
-            message: `发生了错误error_code:${data.errorCode}`,
-        })
-    }
+
+	const data = await $fetch("http://openapi.youdao.com/api", {
+		query: {
+			q: text,
+			from: from,
+			to: to,
+			appKey: conf.appKey,
+			salt: salt,
+			sign: sign,
+			signType: 'v3',
+			curtime: curtime,
+			ext: 'mp3',
+		}
+	}) as any;
+
+	if (data.errorCode != 0) {
+		throw createError({
+			statusCode: data.errorCode,
+			message: `发生了错误error_code:${data.errorCode}`,
+		})
+	}
 
 
-    const obj = {} as Record<string, any>
+	const obj = {} as Record<string, any>
 
 	obj.text = data.translation.join('\n')
 	obj.isWord = data.isWord
@@ -75,7 +75,7 @@ export const youdao: TranslateText = async (text, from, to,conf) => {
 		})
 	}
 
-    return obj.text;
+	return obj.text;
 }
 
- 
+

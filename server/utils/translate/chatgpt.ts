@@ -1,8 +1,8 @@
 import { Configuration, OpenAIApi } from "openai"
 
- 
 
-export const chatgpt: TranslateText = async (text, from, to,conf) => {
+
+export const chatgpt: TranslateText = async (text, from, to, conf) => {
     const configuration = new Configuration({
         apiKey: "sk-" + conf.apiKey,
     });

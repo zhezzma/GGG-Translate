@@ -1,12 +1,12 @@
 import { createHash } from "crypto";
 
 
- 
 
-export const baidu: TranslateText = async (text, from, to,conf) => {
+
+export const baidu: TranslateText = async (text, from, to, conf) => {
 
     const salt = new Date().getTime()
- 
+
     const result = await $fetch('https://fanyi-api.baidu.com/api/trans/vip/translate', {
         query: {
             q: text,
@@ -19,7 +19,7 @@ export const baidu: TranslateText = async (text, from, to,conf) => {
             tts: 1,
         }
     }) as any;
- 
+
     if (result?.hasOwnProperty("error_code")) {
         throw createError({
             statusCode: result.error_code,
@@ -30,4 +30,4 @@ export const baidu: TranslateText = async (text, from, to,conf) => {
     return result.trans_result.map((x: any) => x.dst).join('\n')
 }
 
- 
+

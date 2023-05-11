@@ -6,7 +6,7 @@ const emit = defineEmits(['toggle-aside'])
 
 const handleSelect = (key: string, keyPath: string[]) => {
   if (key == "logo") {
-   // emit('toggle-aside')
+    // emit('toggle-aside')
   }
   else if (key == "dark") {
   }
@@ -17,7 +17,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
 const drawer = ref(false)
 const drawerSize = computed(() => window.innerWidth < 400 ? window.innerWidth : 400);
 
-const settings = useSettingsStore();
+const settings = useAPISettingsStore();
 const appConfig = useAppConfig();
 const translateDict: Record<string, any> = {};
 
@@ -33,7 +33,7 @@ const toUpperFirst = (str: string) => {
 </script>
 
 <template>
-  <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false" @select="handleSelect">
+  <el-menu :default-active="activeIndex" mode="horizontal" :ellipsis="false" @select="handleSelect">
     <el-menu-item index="logo">GGG翻译</el-menu-item>
     <div class="flex-grow" />
     <el-menu-item h="full" index="dark">
@@ -60,8 +60,9 @@ const toUpperFirst = (str: string) => {
       </template>
       <template #default>
         <el-collapse accordion>
-          <el-collapse-item v-for="(setting, key) in settings.$state" :key="key" :title="translateDict[key].label" :name="key">
-            <el-form     label-position="left" label-width="70px">
+          <el-collapse-item v-for="(setting, key) in settings.$state" :key="key" :title="translateDict[key].label"
+            :name="key">
+            <el-form label-position="left" label-width="70px">
               <el-form-item v-for="(value, k) in setting" :key="k" :prop="k" :label="toUpperFirst(k)">
                 <el-switch v-model="setting.enable" v-if="k === 'enable'" />
                 <el-input v-model="setting[k]" v-else />

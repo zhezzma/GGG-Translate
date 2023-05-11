@@ -1,6 +1,6 @@
-import {getDefaultSettings} from './index'
+import { getDefaultSettings } from './index'
 
-export const useSettingsStore = defineStore('settings', {
+export const useAPISettingsStore = defineStore('api_settings', {
   state: () => {
     var settings = getDefaultSettings()
     return settings
@@ -44,7 +44,7 @@ export const useSettingsStore = defineStore('settings', {
 });
 
 
-export function mergeObjects(a:any,b:any):any{
+export function mergeObjects(a: any, b: any): any {
   const result = { ...a };
   for (const [key, value] of Object.entries(b)) {
     if (typeof value === "object" && value !== null) {
@@ -66,5 +66,5 @@ export function mergeTranslates(a: any, b: any): any {
       filtered[prop] = b[prop];
     }
   }
-  return mergeObjects(a,filtered)
+  return mergeObjects(a, filtered)
 }

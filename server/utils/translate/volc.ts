@@ -1,7 +1,7 @@
 import { Service } from "@volcengine/openapi";
- 
- 
-export const volc: TranslateText = async (text, from, to,conf) => {
+
+
+export const volc: TranslateText = async (text, from, to, conf) => {
 
     try {
         const postBody = {
@@ -14,8 +14,8 @@ export const volc: TranslateText = async (text, from, to,conf) => {
             host: "open.volcengineapi.com",
             serviceName: "translate",
             region: "cn-north-1",
-            accessKeyId:conf.accessKey,
-            secretKey:conf.secretKey,
+            accessKeyId: conf.accessKey,
+            secretKey: conf.secretKey,
         });
 
         const fetchApi = service.createAPI("TranslateText", {

@@ -1,9 +1,6 @@
-
-
-// https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 import { getDefaultSettings } from "./stores/index"
 
-
+// https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
   app: {
     // head
@@ -105,9 +102,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      development:false,
+      development: false,
       apiBase: '/api',
-      detect_lang :['google','tencent'],
+      detect_lang: ['google', 'tencent'],
       translates: getDefaultSettings(),
     }
   },

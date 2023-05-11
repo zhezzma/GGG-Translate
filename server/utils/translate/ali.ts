@@ -5,7 +5,7 @@ import alimt20181012, * as $alimt20181012 from '@alicloud/alimt20181012';
 import OpenApi, * as $OpenApi from '@alicloud/openapi-client';
 import Util, * as $Util from '@alicloud/tea-util';
 import * as $tea from '@alicloud/tea-typescript';
- 
+
 
 /**
  * 使用AK&SK初始化账号Client
@@ -29,7 +29,7 @@ function createClient(accessKeyId: string, accessKeySecret: string): alimt201810
 
 
 
-export const ali: TranslateText = async (text, from, to,conf) => {
+export const ali: TranslateText = async (text, from, to, conf) => {
 
     // 工程代码泄露可能会导致AccessKey泄露，并威胁账号下所有资源的安全性。以下代码示例仅供参考，建议使用更安全的 STS 方式，更多鉴权访问方式请参见：https://help.aliyun.com/document_detail/378664.html
     let client = createClient(conf.keyId, conf.keySecret);
@@ -55,7 +55,7 @@ export const ali: TranslateText = async (text, from, to,conf) => {
 
 
 
-export const ali_common: TranslateText = async (text, from, to,conf) => {
+export const ali_common: TranslateText = async (text, from, to, conf) => {
 
     // 工程代码泄露可能会导致AccessKey泄露，并威胁账号下所有资源的安全性。以下代码示例仅供参考，建议使用更安全的 STS 方式，更多鉴权访问方式请参见：https://help.aliyun.com/document_detail/378664.html
     let client = createClient(conf.keyId, conf.keySecret);

@@ -1,9 +1,9 @@
 
 import { translate } from "bing-translate-api"
 
- 
 
-export const bing: TranslateText = async (text, from, to,conf) => {
+
+export const bing: TranslateText = async (text, from, to, conf) => {
 
     try {
         const result = await translate(text, from, to);

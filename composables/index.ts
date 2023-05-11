@@ -1,7 +1,7 @@
 
 
-export  async function translateText(translator: string, sourceText: string, langFrom: string, langTo: string,conf:any) {
-  const runtimeConfig = useRuntimeConfig() 
+export async function translateText(translator: string, sourceText: string, langFrom: string, langTo: string, conf: any) {
+  const runtimeConfig = useRuntimeConfig()
   return await useFetch(`${runtimeConfig.public.apiBase}/translate_text`, {
     query: {
       translator: translator,
@@ -14,15 +14,15 @@ export  async function translateText(translator: string, sourceText: string, lan
 }
 
 
-export  async function detectText( sourceText: string,conf:any) {
-  const runtimeConfig = useRuntimeConfig() 
+export async function detectText(sourceText: string, conf: any) {
+  const runtimeConfig = useRuntimeConfig()
   return await useFetch(`${runtimeConfig.public.apiBase}/detect_lang`, {
     query: {
       text: sourceText,
-      config:encodeURIComponent(JSON.stringify(conf))
-    } 
+      config: encodeURIComponent(JSON.stringify(conf))
+    }
   })
 }
 
 
- 
+

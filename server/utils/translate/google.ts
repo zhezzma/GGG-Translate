@@ -5,7 +5,7 @@ const api_url = 'https://translation.googleapis.com/language/translate/v2';
 
 //https://cloud.google.com/translate/docs/reference/rest/v2/translate
 
-export const google: TranslateText = async (text, from, to,conf) => {
+export const google: TranslateText = async (text, from, to, conf) => {
 
     try {
         const result = await $fetch(api_url, {
@@ -26,7 +26,7 @@ export const google: TranslateText = async (text, from, to,conf) => {
 }
 
 
-export const google_detect:DetectTextLang = async (str: string,conf:any) => {
+export const google_detect: DetectTextLang = async (str: string, conf: any) => {
     try {
         const result = await $fetch(api_url + "/detect", {
             query: {

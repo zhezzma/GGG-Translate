@@ -13,7 +13,7 @@ const pages = ['/', '/hello', '/world', '/vue'];
 </script>
 
 <template>
-  <NuxtLayout> 
+  <NuxtLayout>
     <NuxtLoadingIndicator />
     <NuxtPage />
   </NuxtLayout>

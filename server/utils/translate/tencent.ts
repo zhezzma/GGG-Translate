@@ -1,10 +1,10 @@
 import * as tencentcloud from "tencentcloud-sdk-nodejs"
 
 
- 
+
 const endpoint = 'tmt.tencentcloudapi.com'
 
-export const tencent: TranslateText = async (text, from, to,conf) => {
+export const tencent: TranslateText = async (text, from, to, conf) => {
 
     const TmtClient = tencentcloud.tmt.v20180321.Client;
 
@@ -38,7 +38,7 @@ export const tencent: TranslateText = async (text, from, to,conf) => {
     }
 }
 
-export const tencent_detect:DetectTextLang = async (str: string,conf:any) => {
+export const tencent_detect: DetectTextLang = async (str: string, conf: any) => {
 
     const TmtClient = tencentcloud.tmt.v20180321.Client;
 
@@ -61,7 +61,7 @@ export const tencent_detect:DetectTextLang = async (str: string,conf:any) => {
 
     // 实例化要请求产品的client对象,clientProfile是可选的
     const client = new TmtClient(clientConfig);
-    const params = {Text: str, ProjectId: 0 };
+    const params = { Text: str, ProjectId: 0 };
 
     try {
         const data = await client.LanguageDetect(params);
@@ -72,7 +72,7 @@ export const tencent_detect:DetectTextLang = async (str: string,conf:any) => {
             message: error as string
         })
     }
-   
+
 }
 
- 
+

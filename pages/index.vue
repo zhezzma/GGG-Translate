@@ -2,7 +2,7 @@
   <el-row :gutter="20">
     <el-col :sm="12" :xs='24'>
       <div class="tool-bar">
-        <el-select v-model="langFrom" filterable>
+        <el-select v-model="form.from" filterable>
           <el-option v-for="(lang, index) in languageList" :key="index" :label="lang.name"
             :value="lang.default"></el-option>
         </el-select>
@@ -11,14 +11,14 @@
           <ElIconSwitch />
         </el-icon>
 
-        <el-select v-model="langTo" filterable>
+        <el-select v-model="form.to" filterable>
           <el-option v-for="(lang, index) in languageList" :key="index" :label="lang.name"
             :value="lang.default"></el-option>
         </el-select>
       </div>
 
       <div class="source-text">
-        <el-input v-model="sourceText.value" :rows="4" type="textarea" autofocus placeholder="请输入要翻译的文本"></el-input>
+        <el-input v-model="form.text" :rows="4" type="textarea" autofocus placeholder="请输入要翻译的文本"></el-input>
         <el-icon @click="cleanSourceText" class="border-none close-btn cursor-pointer">
           <ElIconClose />
         </el-icon>
@@ -55,41 +55,41 @@
 import { debounce } from "ts-debounce";
 const appConfig = useAppConfig()
 const runtimeConfig = useRuntimeConfig()
-const store = useSettingsStore();
-const sourceText = useInputHistoryStore();
-const langFrom = ref("auto")
-const langTo = ref('auto')
+const store = useAPISettingsStore();
+const form = useFormSettingsStore();
 const languageList = appConfig.languages
 
-sourceText.$subscribe((mutation, state) => {
-  var newText = state.value.trim()
-  execute(newText)
+form.$subscribe((mutation, state) => {
+  translate(form.text.trim())
 })
-
-const execute = (text: string) => {
-  translate(text)
-}
-
 
 const translate = debounce(async (text: string) => {
   let from = "zh";
-  if (langFrom.value == "auto") {
+  if (form.from == "auto") {
     const { data } = await detectText(text, store.detectSettings)
     //@ts-expect-error
     from = data.value.lang
   }
   else {
-    from = langFrom.value
+    from = form.from
+  }
+
+  let to = form.to;
+  if (to == "auto") {
+    if (from == "zh") to = "en";
+    if (from == "en") to = "zh";
+  }
+
+  if (runtimeConfig.public.development) {
+    console.log(`${from}==>${to}`);
   }
 
   enabledTranslates.value.forEach(api => {
-    translate_api(api, text, from)
+    translate_api(api, text, from, to)
   })
 }, 1500)
 
-
-
-const translate_api = async (api: any, text: string, from: string) => {
+const translate_api = async (api: any, text: string, from: string, to: string) => {
   if (!text || text === '') {
     api.loading = false
     api.error = ''
@@ -100,28 +100,23 @@ const translate_api = async (api: any, text: string, from: string) => {
   if (api.loading) {
     return
   }
-  let to = langTo.value;
-  if (to == "auto") {
-    if (from == "zh") to = "en";
-    if (from == "en") to = "zh";
-  }
 
-  api.loading = true
-  api.error = ''
-  api.result = ''
-
-  if (runtimeConfig.public.development) {
-    console.log(`${api}:${from}==>${to}`);
+  try {
+    api.loading = true
+    api.error = ''
+    api.result = ''
+    const { data, pending, error, refresh } = await translateText(api.name, text, from, to, store.translateSetting(api.name))
+    if (error.value) {
+      api.error = error.value?.data.message
+      return
+    }
+    //@ts-expect-error
+    api.result = data.value.message
+  } catch (error) {
+    console.log(error)
+  } finally {
+    api.loading = false
   }
-
-  const { data, pending, error, refresh } = await translateText(api.name, text, from, to, store.translateSetting(api.name))
-  api.loading = false
-  if (error.value) {
-    api.error = error.value?.data.message
-    return
-  }
-  //@ts-expect-error
-  api.result = data.value.message
 }
 
 const enabledTranslates = computed(() => {
@@ -130,11 +125,11 @@ const enabledTranslates = computed(() => {
 
 
 function swapLangs() {
-  const langToValue = langTo.value;
-  const langFromValue = langFrom.value;
-  langFrom.value = langToValue;
-  langTo.value = langFromValue
-  execute(sourceText.value)
+  const langToValue = form.to;
+  const langFromValue = form.from;
+  form.from = langToValue;
+  form.to = langFromValue
+  translate(form.text.trim())
 }
 
 function copy(text: string) {
@@ -148,7 +143,7 @@ function copy(text: string) {
 }
 
 function cleanSourceText() {
-  sourceText.value = ""
+  form.text = ""
 }
 
 

@@ -19,7 +19,7 @@ export async function language_detect(str: string, config: any): Promise<string>
     const runtimeConfig = useRuntimeConfig()
     for (let index = 0; index < runtimeConfig.public.detect_lang.length; index++) {
         const element = runtimeConfig.public.detect_lang[index] as string;
-        const detectTextLang  = detects.get(element);
+        const detectTextLang = detects.get(element);
         try {
             lang = await detectTextLang!(str, config[element])
             break;

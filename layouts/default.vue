@@ -8,7 +8,7 @@ const toggleAside = () => {
   showAside.value = !showAside.value;
 };
 
-if (false&&process.client) {
+if (false && process.client) {
   const screenWidth = ref(window.innerWidth);
   watchEffect(() => {
     if (screenWidth.value < 512) {
@@ -30,7 +30,7 @@ onMounted(() => {
 
 <template>
   <el-config-provider>
-    <div class="common-layout" v-if="isLoaded">
+    <div v-if="isLoaded">
       <el-container>
         <el-header v-show="showHeader">
           <BaseHeader @toggle-aside="toggleAside" />
@@ -62,10 +62,6 @@ onMounted(() => {
 
 
 <style>
-.common-layout {
-  color: var(--ep-text-color-primary);
-}
-
 .loading-spinner-wrapper {
   position: fixed;
   top: 0;
@@ -84,7 +80,7 @@ onMounted(() => {
 .loading-spinner {
   border: 4px solid #f3f3f3;
   /* 圆形边框颜色 */
-  border-top: 4px solid #3498db;
+  border-top: 4px solid var(--el-color-primary);
   /* 圆形顶部颜色 */
   border-radius: 50%;
   /* 圆形边框半径（使其变成圆形） */
@@ -107,4 +103,5 @@ onMounted(() => {
   }
 
   /* 结束状态：旋转角度为 360，即一整圈 */
-}</style>
+}
+</style>
