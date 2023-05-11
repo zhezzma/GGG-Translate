@@ -1,4 +1,8 @@
 
+const detects = new Map<string, DetectTextLang>();
+detects.set(tencent.name, tencent_detect)
+detects.set(google.name, google_detect)
+
 export default defineEventHandler(async (event) => {
     const query = getQuery(event)
     const text = query.text as string;
@@ -12,22 +16,16 @@ export default defineEventHandler(async (event) => {
 
 export async function language_detect(str: string, config: any): Promise<string> {
     let lang = ''
-
     const runtimeConfig = useRuntimeConfig()
-    if (runtimeConfig.development == false && lang === '') {
+    for (let index = 0; index < runtimeConfig.detect_lang.length; index++) {
+        const element = runtimeConfig.detect_lang[index] as string;
+        const detectTextLang  = detects.get(element);
         try {
-            lang = await google_detect(str, config["google"])
+            lang = await detectTextLang!(str, config[element])
+            break;
         } catch {
         }
     }
-
-    if (lang === '') {
-        try {
-            lang = await tencent_detect(str, config["tencent"])
-        } catch {
-        }
-    }
-
     return lang || lang_testing(str)
 }
 
