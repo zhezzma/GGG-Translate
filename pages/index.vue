@@ -69,7 +69,7 @@ type Translate = {
   requestId: string
 }
 
-const resetTranslate = (api: Translate) => {
+const resetTranslate = (api: any) => {
   api.loading = false
   api.error = ''
   api.result = ''
@@ -92,7 +92,7 @@ for (let i = 0; i < appConfig.translates.length; i++) {
 }
 
 const enabledTranslates = computed(() => {
-  return translates.filter(api => store.settings[api.name].enable)
+  return appConfig.translates.filter(api => store.settings[api.name].enable)
 })
 
 
@@ -126,7 +126,7 @@ const translate = debounce(async (text: string) => {
   })
 }, 1500)
 
-const translate_api = async (api: Translate, text: string, from: string, to: string) => {
+const translate_api = async (api: any, text: string, from: string, to: string) => {
   if (!text || text === '') {
     resetTranslate(api)
     return
