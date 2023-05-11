@@ -1,6 +1,6 @@
 
 
-export async function translateText(translator: string, sourceText: string, langFrom: string, langTo: string, conf: any) {
+export async function translateText(translator: string, sourceText: string, langFrom: string, langTo: string, requestId:string,conf: any) {
   const runtimeConfig = useRuntimeConfig()
   return await useFetch(`${runtimeConfig.public.apiBase}/translate_text`, {
     query: {
@@ -8,6 +8,7 @@ export async function translateText(translator: string, sourceText: string, lang
       text: sourceText,
       from: langFrom,
       to: langTo,
+      requestId:requestId,
       config: encodeURIComponent(JSON.stringify(conf))
     }
   })

@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
     const text = query.text as string;
     let from = query.from as string;
     let to = query.to as string;
+    let requestId = query.requestId as string;
     const config = JSON.parse(decodeURIComponent(query.config as string));
 
     from = fixLanguageCode(translator, from);
@@ -27,11 +28,32 @@ export default defineEventHandler(async (event) => {
     if (!func) {
         throw createError({
             message: `${translator}没有实现相对应的处理方法`,
+            data: {
+                requestId: requestId,
+                from: from,
+                to: to,
+                text: text,
+                translator: translator
+            }
         })
     }
-    const message = await func(text, from, to, config);
-    return {
-        message: message
+
+    try {
+        const message = await func(text, from, to, config);
+        return {
+            message: message,
+            requestId: requestId,
+        }
+    }
+    catch (error: any) {
+        error.data = {
+            requestId: requestId,
+            from: from,
+            to: to,
+            text: text,
+            translator: translator
+        }
+        throw error;
     }
 })
 

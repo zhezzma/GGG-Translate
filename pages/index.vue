@@ -38,7 +38,7 @@
           </template>
 
           <div class="card-content">
-            <el-text v-if="api.loading" type="primary" :class="{ 'is-loading': api.loading }">正在翻译中...</el-text>
+            <el-text v-if="api.loading" :class="{ 'is-loading': api.loading }">{{ api.result }}...</el-text>
             <el-text v-else-if="api.error" type="danger">{{ api.error }}</el-text>
             <el-text v-else>{{ api.result }}</el-text>
             <el-icon @click="copy(api.result)" class="border-none copy-btn cursor-pointer">
@@ -59,8 +59,45 @@ const store = useAPISettingsStore();
 const form = useFormSettingsStore();
 const languageList = appConfig.languages
 
+type Translate = {
+  label: string,
+  name: string,
+  icon: string,
+  loading: boolean,
+  error: string,
+  result: string,
+  requestId: string
+}
+
+const resetTranslate = (api: Translate) => {
+  api.loading = false
+  api.error = ''
+  api.result = ''
+  api.requestId = ''
+}
+
+const raw: Translate[] = [];
+const translates = reactive(raw);
+for (let i = 0; i < appConfig.translates.length; i++) {
+  const obj = appConfig.translates[i];
+  translates.push({
+    label: obj.label,
+    name: obj.name,
+    icon: obj.icon,
+    loading: false,
+    error: '',
+    result: '',
+    requestId: '',
+  })
+}
+
+const enabledTranslates = computed(() => {
+  return translates.filter(api => store.settings[api.name].enable)
+})
+
+
 form.$subscribe((mutation, state) => {
-  translate(form.text.trim())
+  translate(form.text)
 })
 
 const translate = debounce(async (text: string) => {
@@ -80,20 +117,18 @@ const translate = debounce(async (text: string) => {
     if (from == "en") to = "zh";
   }
 
+  text = text.trim()
   if (runtimeConfig.public.development) {
-    console.log(`${from}==>${to}`);
+    console.log(`${from}==>${to}:${text}`);
   }
-
   enabledTranslates.value.forEach(api => {
     translate_api(api, text, from, to)
   })
 }, 1500)
 
-const translate_api = async (api: any, text: string, from: string, to: string) => {
+const translate_api = async (api: Translate, text: string, from: string, to: string) => {
   if (!text || text === '') {
-    api.loading = false
-    api.error = ''
-    api.result = ''
+    resetTranslate(api)
     return
   }
 
@@ -104,10 +139,18 @@ const translate_api = async (api: any, text: string, from: string, to: string) =
   try {
     api.loading = true
     api.error = ''
-    api.result = ''
-    const { data, pending, error, refresh } = await translateText(api.name, text, from, to, store.translateSetting(api.name))
+    const requestId = Math.random().toString(36).substr(2, 9);
+    api.requestId = requestId;
+    const { data, pending, error, refresh } = await translateText(api.name, text, from, to, requestId, store.translateSetting(api.name))
     if (error.value) {
+      if (error.value?.data.data.requestId != api.requestId) {
+        return;
+      }
       api.error = error.value?.data.message
+      return
+    }
+    //@ts-expect-error
+    if (data.value.requestId != api.requestId) {
       return
     }
     //@ts-expect-error
@@ -119,17 +162,12 @@ const translate_api = async (api: any, text: string, from: string, to: string) =
   }
 }
 
-const enabledTranslates = computed(() => {
-  return appConfig.translates.filter(api => store.settings[api.name].enable)
-})
-
-
 function swapLangs() {
   const langToValue = form.to;
   const langFromValue = form.from;
   form.from = langToValue;
   form.to = langFromValue
-  translate(form.text.trim())
+  translate(form.text)
 }
 
 function copy(text: string) {
@@ -144,8 +182,10 @@ function copy(text: string) {
 
 function cleanSourceText() {
   form.text = ""
+  enabledTranslates.value.forEach(api => {
+    resetTranslate(api)
+  })
 }
-
 
 onMounted(() => {
   if (runtimeConfig.public.development) {
