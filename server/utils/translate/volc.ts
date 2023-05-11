@@ -22,6 +22,15 @@ export const volc: TranslateText = async (text, from, to, conf) => {
             contentType: "json",
         });
         const rr = await fetchApi(postBody);
+
+        if(rr.ResponseMetadata.Error)
+        {
+            throw createError({
+                statusCode: 500,
+                message: `${rr.ResponseMetadata.Error.Message}`,
+            })
+        }
+
         //@ts-expect-error
         return (rr.TranslationList || rr.Result ||[]).map((x: any) => x.Translation).join('\n')
     } catch (error) {
