@@ -1,6 +1,4 @@
-import * as CryptoJS from 'crypto-js';
-
-
+import CryptoJS from "crypto-js"
 
 
 export const baidu: TranslateText = async (text, from, to, conf) => {
