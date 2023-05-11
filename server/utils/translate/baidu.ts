@@ -1,4 +1,4 @@
-import { createHash } from "crypto";
+import md5 from "crypto-js/md5";
 
 
 
@@ -14,7 +14,7 @@ export const baidu: TranslateText = async (text, from, to, conf) => {
             to: to,
             appid: conf.appId,
             salt: salt,
-            sign: createHash('md5').update(conf.appId + text + salt + conf.secret).digest('hex'),
+            sign: md5(conf.appId + text + salt + conf.secret).toString(),
             dict: 1,
             tts: 1,
         }

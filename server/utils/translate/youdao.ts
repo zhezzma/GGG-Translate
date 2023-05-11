@@ -1,4 +1,4 @@
-import { createHash } from "crypto";
+import sha256 from "crypto-js/sha256";
 
 
 
@@ -18,7 +18,7 @@ export const youdao: TranslateText = async (text, from, to, conf) => {
 
 	const salt = S4() + S4() + S4() + S4() + S4() + S4() + S4() + S4()
 	const curtime = Math.round(Date.now() / 1000)
-	const sign = createHash('sha256').update(conf.appKey + truncate(text) + salt + curtime + conf.key).digest('hex')
+	const sign = sha256(conf.appKey + truncate(text) + salt + curtime + conf.key).toString()
 
 	const data = await $fetch("http://openapi.youdao.com/api", {
 		query: {
