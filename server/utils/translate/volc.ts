@@ -23,11 +23,11 @@ export const volc: TranslateText = async (text, from, to, conf) => {
         });
         const rr = await fetchApi(postBody);
 
-        if(rr.ResponseMetadata.Error)
+        if(rr.ResponseMetadata?.Error)
         {
             throw createError({
                 statusCode: 500,
-                message: `${rr.ResponseMetadata.Error.Message}`,
+                message: `${rr.ResponseMetadata?.Error?.Message}`,
             })
         }
 
