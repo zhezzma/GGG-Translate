@@ -3,6 +3,8 @@ import { Service } from "@volcengine/openapi";
 
 export const volc: TranslateText = async (text, from, to, conf) => {
 
+    let aaa:any;
+
     try {
         const postBody = {
             SourceLanguage: from,
@@ -23,12 +25,12 @@ export const volc: TranslateText = async (text, from, to, conf) => {
             method: "POST",
             contentType: "json",
         });
-        const rr = await fetchApi(postBody);
+        aaa = await fetchApi(postBody);
         //@ts-expect-error
-        return rr.TranslationList.map((x: any) => x.Translation).join('\n')
+        return aaa.TranslationList.map((x: any) => x.Translation).join('\n')
     } catch (error) {
         throw createError({
-            message: error as string
+            message: (error as string)+aaa.toString()
         })
     }
 }
