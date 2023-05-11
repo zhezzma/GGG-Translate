@@ -34,7 +34,7 @@ const toUpperFirst = (str: string) => {
 
 <template>
   <el-menu :default-active="activeIndex" mode="horizontal" :ellipsis="false" @select="handleSelect">
-    <el-menu-item index="logo">GGG翻译</el-menu-item>
+    <el-menu-item index="logo"><a href="/">GGG翻译</a></el-menu-item>
     <div class="flex-grow" />
     <el-menu-item h="full" index="dark">
       <DarkToggle>
