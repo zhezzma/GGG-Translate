@@ -1,13 +1,13 @@
 <template>
   <el-row :gutter="20">
     <el-col :sm="12" :xs='24'>
-      <el-space size="small" class="tool-bar">
+      <div class="tool-bar">
         <el-select v-model="langFrom" filterable>
           <el-option v-for="(lang, index) in languageList" :key="index" :label="lang.name"
             :value="lang.default"></el-option>
         </el-select>
 
-        <el-icon @click="swapLangs" class="border-none vertical-align-middle cursor-pointer">
+        <el-icon @click="swapLangs" class="border-none swap-button vertical-align-middle cursor-pointer">
           <ElIconSwitch />
         </el-icon>
 
@@ -15,10 +15,10 @@
           <el-option v-for="(lang, index) in languageList" :key="index" :label="lang.name"
             :value="lang.default"></el-option>
         </el-select>
-      </el-space>
+      </div>
 
       <div class="source-text">
-        <el-input v-model="sourceText" :rows="4" type="textarea" autofocus placeholder="请输入要翻译的文本"></el-input>
+        <el-input v-model="sourceText.value" :rows="4" type="textarea" autofocus placeholder="请输入要翻译的文本"></el-input>
         <el-icon @click="cleanSourceText" class="border-none close-btn cursor-pointer">
           <ElIconClose />
         </el-icon>
@@ -56,10 +56,9 @@ import { debounce } from "ts-debounce";
 const appConfig = useAppConfig()
 
 const store = useSettingsStore();
-
-const langFrom = ref("zh")
-const langTo = ref('en')
-const sourceText = ref('')
+const sourceText = useInputHistoryStore();
+const langFrom = ref("auto")
+const langTo = ref('auto')
 
  
 
@@ -67,8 +66,8 @@ const languageList = appConfig.languages
 
 let from = "zh";
 
-watch(sourceText, (newText, oldText) => {
-  newText = newText.trim()
+sourceText.$subscribe((mutation, state) => {
+  var newText = state.value.trim()
   execute(newText)
 })
 
@@ -165,6 +164,18 @@ function cleanSourceText() {
 
 .tool-bar {
   margin-bottom: 20px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tool-bar .el-select{
+  flex: 1;
+}
+
+.tool-bar .swap-button{
+  flex: 0 0 50px;
 }
 
 .vertical-align-middle {

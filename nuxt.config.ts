@@ -104,7 +104,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    apiSecret: '123456',
+    development:false,
     public: {
       apiBase: '/api',
       translates: getDefaultSettings(),

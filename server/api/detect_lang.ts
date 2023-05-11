@@ -13,16 +13,17 @@ export default defineEventHandler(async (event) => {
 export async function language_detect(str: string, config: any): Promise<string> {
     let lang = ''
 
-    if (lang === '') {
+    const runtimeConfig = useRuntimeConfig()
+    if (runtimeConfig.development == false && lang === '') {
         try {
-            lang = await tencent_detect(str, config["tencent"])
+            lang = await google_detect(str, config["google"])
         } catch {
         }
     }
 
     if (lang === '') {
         try {
-            lang = await google_detect(str, config["google"])
+            lang = await tencent_detect(str, config["tencent"])
         } catch {
         }
     }
