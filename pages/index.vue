@@ -123,7 +123,7 @@ const translate = debounce(async (text: string) => {
   enabledTranslates.value.forEach(api => {
     translate_api(api, text, from, to)
   })
-}, 1500)
+}, 800)
 
 const translate_api = async (api: Translate, text: string, from: string, to: string) => {
   if (!text || text === '') {
